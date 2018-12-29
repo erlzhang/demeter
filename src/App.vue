@@ -1,23 +1,27 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+  <div id="app" class="container-fluid p-0">
+    <nav-bar></nav-bar>
+    <div class="container p-4">
+      <router-view/>
+    </div>
   </div>
 </template>
 
 <script>
+import NavBar from '@/components/NavBar'
+import LocalDb from '@/services/LocalDb'
+
+LocalDb.init();
+
 export default {
-  name: 'App'
+  name: 'App',
+  data: () => ({
+  }),
+  components: {
+    NavBar
+  }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
