@@ -3,6 +3,8 @@ import uniqid from 'uniqid'
 import LocalDb from '@/services/LocalDb'
 import FIELDS from '@/data/fields'
 
+import Validation from '@/utils/Validation'
+
 const STORE = "pages"
 
 export default class {
@@ -25,6 +27,7 @@ export default class {
       this.isSaved = true
     }
     this.type = "page"
+    console.log( this )
   }
 
   getParams (args, obj={}) {
@@ -38,18 +41,38 @@ export default class {
         })
       }
     }
+    console.log(obj)
     return obj
   }
 
-  validate () {
-
+  validates (params) {
+    this.errors = {}
+    let is_valid = true
+    for ( let field of Object.keys(this.fields) ) {
+      let value = params[field]
+      let specs = this.fields[field]
+      let validation = new Validation(value, field, specs)
+      if ( validation.error ) {
+        this.errors[field] = validation.error
+        is_valid = is_valid ? false : is_valid
+      }
+    }
+    return is_valid;
   }
 
   save () {
     if ( this.isSaved ) return;
 
     const item = this.getParams(this)
-    const e = LocalDb.addItem(this.store, this.getParams(this))
+
+    this.is_valid = this.validates(item)
+    if ( !this.is_valid ) {
+      return {
+        type: "invalid"
+      }
+    }
+
+    const e = LocalDb.addItem(this.store, item)
     if ( e.type == "success" ) {
       this.isSaved = true;
     }
@@ -60,7 +83,13 @@ export default class {
     if ( !this.isSaved ) return;
 
     const item = this.getParams(this)
-    return LocalDb.updateItem(this.store, this.getParams(this))
+
+    this.is_valid = this.validates(item)
+    if ( !this.is_valid ) {
+      return;
+    }
+
+    return LocalDb.updateItem(this.store, item)
   }
 
   delete () {

@@ -1,62 +1,57 @@
+import CATEGORIES from '@/data/categories'
+
 const fields = {
   page: {
     uid: {
       required: true,
       mutable: false,
-      type: String,
+      type: "string",
       unique: true
     },
     slug: {
       required: true,
       mutable: true,
-      type: String,
-      unique: "partial"
+      type: "string"
     },
     title: {
       required: true,
       mutable: true,
-      type: String
+      type: "string"
     },
     content: {
       required: true,
       mutable: true,
-      type: Markdown
+      type: "markdown"
     },
     type: {
       required: true,
       mutable: false,
-      type: String
+      type: "string"
     }
   },
   post: {
     datetime: {
       required: true,
-      mutable: true,
-      type: DateTime
+      mutable: false,
+      type: "datetime"
     },
     published: {
-      mutable: true,
-      type: Boolearn
-    },
-    ref: {
-      required: true,
-      mutable: true,
-      type: String
-    },
-    locale: {
-      required: true,
-      mutable: true,
-      type: String,
-      range: ["zh", "en"],
-      default: "zh"
+      mutable: false,
+      type: "boolean"
     },
     keywords: {
       mutable: true,
-      type: String
+      type: "string"
     },
     description: {
       mutable: true,
-      type: Text
+      type: "string"
+    },
+    category: {
+      required: true,
+      mutable: true,
+      type: "range",
+      range: CATEGORIES
     }
   }
 }

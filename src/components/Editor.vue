@@ -1,5 +1,5 @@
 <template>
-  <textarea class="form-control" contenteditable="true" v-on:input="editChange($event)">{{content}}</textarea>
+  <textarea class="form-control" contenteditable="true" v-on:input="editChange($event)" required>{{content}}</textarea>
 </template>
 
 <style scoped>
